@@ -1,11 +1,12 @@
 import time
 from typing import Optional
 import jwt
+import os
 from fastapi import HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordBearer
 
-# Secret key for demonstration; in production, use an environment variable.
-SECRET_KEY = "mysecretkey"
+JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "hash1234")
+
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
@@ -19,12 +20,12 @@ def create_access_token(data: dict, expires_delta: Optional[int] = None):
         expire = int(time.time()) + expires_delta * 60
     to_encode.update({"exp": expire})
     # print(f"Token data: {to_encode}")  # Debugging line
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
 def verify_token(token: str):
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
         if username is None:
             raise HTTPException(

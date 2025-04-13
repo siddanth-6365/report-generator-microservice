@@ -26,7 +26,7 @@ def add_schedule(cron_expr: str):
         trigger = CronTrigger.from_crontab(cron_expr)
     except Exception as e:
         raise ValueError(f"Invalid cron expression: {str(e)}")
-    job_id = str(uuid.uuid4())  # Generate a random UUID for the job ID
+    job_id = str(uuid.uuid4())
     job = scheduler.add_job(scheduled_report_job, trigger=trigger, id=job_id, replace_existing=True)
     return job
 

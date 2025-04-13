@@ -13,33 +13,26 @@ def load_transformation_rules():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error loading transformation rules: {str(e)}")
 
-def apply_transformation(df):
+def apply_transformation(df_input, df_reference):
+    try:
+        merged_df = pd.merge(df_input, df_reference, on=['refkey1', 'refkey2'], how='left')
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error merging dataframes: {str(e)}")
+    
     rules = load_transformation_rules()
+    output_data = {}
+
+    for outfield, expr in rules.items():
+        try:
+            # Evaluate the transformation expression per row.
+            # We build an evaluation context with all row values.
+            # Only the "max" function is exposed as a built-in.
+            output_data[outfield] = merged_df.apply(
+                lambda row: eval(expr, {"__builtins__": {}}, {**row.to_dict(), "max": max}),
+                axis=1
+            )
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Error applying transformation for '{outfield}': {str(e)}")
     
-    if rules.get("outfield1") == "field1 + field2":
-        df["outfield1"] = df["field1"].astype(str) + df["field2"].astype(str)
-    else:
-        df["outfield1"] = "Not Implemented"
-    
-    if rules.get("outfield2") == "refdata1":
-        df["outfield2"] = df["refdata1"]
-    else:
-        df["outfield2"] = "Not Implemented"
-    
-    if rules.get("outfield3") == "refdata2 + refdata3":
-        df["outfield3"] = df["refdata2"].astype(str) + df["refdata3"].astype(str)
-    else:
-        df["outfield3"] = "Not Implemented"
-    
-    if rules.get("outfield4") == "field3 * max(field5, refdata4)":
-        df["outfield4"] = pd.to_numeric(df["field3"], errors="coerce") * df[["field5", "refdata4"]].max(axis=1)
-    else:
-        df["outfield4"] = "Not Implemented"
-    
-    if rules.get("outfield5") == "max(field5, refdata4)":
-        df["outfield5"] = df[["field5", "refdata4"]].max(axis=1)
-    else:
-        df["outfield5"] = "Not Implemented"
-    
-    output_columns = ["outfield1", "outfield2", "outfield3", "outfield4", "outfield5"]
-    return df[output_columns]
+    output_df = pd.DataFrame(output_data)
+    return output_df

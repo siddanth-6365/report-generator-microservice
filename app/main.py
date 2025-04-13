@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from app.routers import health, auth, file_upload, report, config, scheduler, metrics 
 import app.logging_config
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI()
 
