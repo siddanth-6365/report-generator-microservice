@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pandas
+APScheduler
+python-multipart
+PyJWT
+python-json-logger
+prometheus_client
+pytest
+httpx
+uuid

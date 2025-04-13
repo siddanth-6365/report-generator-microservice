@@ -1,0 +1,10 @@
+field1,field2,field3,field4,field5,refkey1,refkey2
+Alice,Bob,123,foo,100,REF001,REF101
+Charlie,Delta,456,bar,200,REF002,REF102
+Eve,Frank,789,baz,150,REF003,REF103
+Grace,Hank,321,qux,175,REF001,REF101
+Ivy,Jack,654,quux,130,REF002,REF102
+Karen,Liam,987,corge,190,REF003,REF103
+Mona,Ned,432,grault,160,REF001,REF101
+Oscar,Paul,876,garply,140,REF002,REF102
+Quinn,Rita,159,waldo,210,REF003,REF103

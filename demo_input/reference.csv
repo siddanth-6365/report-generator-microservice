@@ -1,0 +1,4 @@
+refkey1,refdata1,refkey2,refdata2,refdata3,refdata4
+REF001,DataAlpha,REF101,ExtraA,ExtraB,150
+REF002,DataBeta,REF102,ExtraC,ExtraD,180
+REF003,DataGamma,REF103,ExtraE,ExtraF,160
