@@ -91,6 +91,14 @@ This repository contains a Python-based microservice built with FastAPI. The ser
    - **Redoc:** [http://localhost:8000/redoc](http://localhost:8000/redoc)
 
 ---
+## Running Tests
+
+To run the tests within a Docker container (ensuring that all dependencies, including the database, are available), execute the following command from the project root:
+
+   ```bash
+   docker-compose up tests
+   ```
+---
 
 ## Project Structure
 
@@ -127,15 +135,6 @@ This repository contains a Python-based microservice built with FastAPI. The ser
 ├── requirements.txt
 └── .gitignore
 ```
----
-
-## Running Tests
-
-1. **Run Tests with Pytest:**
-
-   ```bash
-   pytest --maxfail=1 --disable-warnings -q
-   ```
 
 ---
 
